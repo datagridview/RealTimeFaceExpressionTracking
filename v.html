@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>camera</title>
+    <script src="js/face-api.js"></script>
+    <script src="js/commons.js"></script>
+    <script src="js/faceDetectionControls.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  </head>
+
+  <body>
+  <!-- fps_meter -->
+  <div id="fps_meter" class="row side-by-side">
+      <div>
+          <label for="time">Time:</label>
+          <input disabled value="-" id="time" type="text" class="bold">
+          <label for="fps">Estimated Fps:</label>
+          <input disabled value="-" id="fps" type="text" class="bold">
+      </div>
+  </div>
+  <!-- fps_meter -->
+      <div style="position: relative;">
+      <!-- <img id="myImg" height="900" src="images/IMG_1809.JPG" /> -->
+      <video muted autoplay loop playsinline id="myVideo" src="bbt.mp4" style="width: 100%; max-width: 800px;"></video>
+      <canvas id="overlay" style="position: absolute;left: 0;top: 0;"></canvas>
+  </div>
+
+
+    <script>
+        let forwardTimes = [];
+        let withFaceLandmarks = false;
+        let withBoxes = true;
+        console.log(faceapi.nets);
+
+        async function loadModels(){
+            await faceapi.nets.ssdMobilenetv1.loadFromUri('models');
+            await faceapi.nets.faceLandmark68Net.loadFromUri('models');
+            await faceapi.nets.faceExpressionNet.loadFromUri('models');
+        }
+
+        function updateTimeStats(timeInMs) {
+            forwardTimes = [timeInMs].concat(forwardTimes).slice(0, 30);
+            const avgTimeInMs = forwardTimes.reduce((total, t) => total + t) / forwardTimes.length;
+            $('#time').val(`${Math.round(avgTimeInMs)} ms`);
+            $('#fps').val(`${faceapi.round(1000 / avgTimeInMs)}`);
+        }
+
+        async function onPlay(videoEl) {
+            if(!videoEl.currentTime || videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
+                return setTimeout(() => onPlay(videoEl));
+            const options = getFaceDetectorOptions();
+            const ts = Date.now();
+            const drawBoxes = withBoxes;
+            const drawLandmarks = withFaceLandmarks;
+            let task = faceapi.detectAllFaces(videoEl, options);
+
+            task = withFaceLandmarks ? task.withFaceLandmarks() : task;
+            const results = await task;
+            updateTimeStats(Date.now() - ts);
+            const canvas = $('#overlay').get(0);
+            const dims = faceapi.matchDimensions(canvas, videoEl, true);
+            const resizedResults = faceapi.resizeResults(results, dims);
+            if (drawBoxes) {
+                faceapi.draw.drawDetections(canvas, resizedResults)
+            }
+            if (drawLandmarks) {
+                faceapi.draw.drawFaceLandmarks(canvas, resizedResults)
+            }
+            setTimeout(() => onPlay(videoEl));
+        }
+
+        // async function f1() {
+        //     // const canvas = faceapi.createCanvasFromMedia(input);
+        //     const input = document.getElementById('myVideo');
+        //     const canvas = document.getElementById('overlay');
+        //
+        //     // const displaySize = { width: input.videoWidth, height: input.videoHeight };
+        //     const displaySize = faceapi.getMediaDimensions(input);
+        //     // resize the overlay canvas to the input dimensions
+        //     faceapi.matchDimensions(canvas, displaySize);
+        //     const detectionsWithExpressions = await faceapi
+        //         .detectAllFaces(input)
+        //         .withFaceLandmarks()
+        //         .withFaceExpressions();
+        //     // resize the detected boxes and landmarks in case your displayed image has a different size than the original
+        //     console.log(canvas);
+        //     const resizedResults = faceapi.resizeResults(detectionsWithExpressions, displaySize);
+        //     // draw detections into the canvas
+        //     faceapi.draw.drawDetections(canvas, resizedResults);
+        //     // draw a textbox displaying the face expressions with minimum probability into the canvas
+        //     // const minProbability = 0.05;
+        //     // faceapi.draw.drawFaceExpressions(canvas, resizedResults, minProbability);
+        // }
+
+
+
+        $(document).ready(function() {
+            // renderNavBar('#navbar', 'video_face_tracking')
+            initFaceDetectionControls();
+            loadModels();
+            onPlay($('#inputVideo').get(0));
+        })
+
+        // f1();
+    </script>
+  </body>
+</html>
