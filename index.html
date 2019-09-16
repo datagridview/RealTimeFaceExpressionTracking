@@ -153,6 +153,8 @@
         let forwardTimes = []
         let withFaceLandmarks = false
         let withBoxes = true
+        let username = localStorage.getItem("username")
+        let password = localStorage.getItem("password")
         function onChangeWithFaceLandmarks(e) {
             withFaceLandmarks = $(e.target).prop('checked')
         }
@@ -204,6 +206,7 @@
 
         $(document).ready(function() {
             // renderNavBar('#navbar', 'video_face_tracking')
+            alert(username + password)
             initFaceDetectionControls()
             run()
         })
