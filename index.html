@@ -1,285 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <script src="js/face-api.js"></script>
-    <script src="js/commons.js"></script>
-    <script src="js/faceDetectionControls.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
-    <link rel="stylesheet" href="/live2d/css/live2d.css" />
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <title>Login V15</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+
+    <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+
+    <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+
+    <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+
+    <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+
+    <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+
+    <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+
+    <link rel="stylesheet" type="text/css" href="css/util.css">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
 
 </head>
 <body>
-<!--<div id="navbar"></div>-->
-<canvas id="live2d"  height="600px" style="position: absolute" class="live2d"></canvas>
-<div style="text-align: center">
-    <div class="center-content page-container" >
 
-        <div class="progress" id="loader">
-            <div class="indeterminate"></div>
-        </div>
-        <div style="position: relative" class="margin">
-            <video onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
-            <canvas id="overlay" />
-        </div>
-
-        <div class="row side-by-side">
-
-            <!-- face_detector_selection_control -->
-            <div id="face_detector_selection_control" class="row input-field" style="margin-right: 20px; text-align: left">
-                <select id="selectFaceDetector">
-                    <option value="ssd_mobilenetv1">SSD Mobilenet V1</option>
-                    <option value="tiny_face_detector">Tiny Face Detector</option>
-                    <option value="mtcnn">MTCNN</option>
-                </select>
-                <label>Select Face Detector</label>
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <div class="login100-form-title" style="background-image: url(images/LIVE.gif);">
+					<span class="login100-form-title-1" style="margin-left: 50%">
+						CSIEC
+					</span>
             </div>
-            <!-- face_detector_selection_control -->
 
-            <!-- check boxes -->
-            <div class="row" style="width: 220px;text-align: left">
-                <input type="checkbox" id="withFaceLandmarksCheckbox" onchange="onChangeWithFaceLandmarks(event)" />
-                <label for="withFaceLandmarksCheckbox">Detect Face Landmarks</label>
-                <input type="checkbox" id="hideBoundingBoxesCheckbox" onchange="onChangeHideBoundingBoxes(event)" />
-                <label for="hideBoundingBoxesCheckbox">Hide Bounding Boxes</label>
-            </div>
-            <!-- check boxes -->
-
-            <!-- fps_meter -->
-            <div id="fps_meter" class="row side-by-side" style="text-align: left">
-                <div>
-                    <label for="time">Time:</label>
-                    <input disabled value="-" id="time" type="text" class="bold">
-                    <label for="fps">Estimated Fps:</label>
-                    <input disabled value="-" id="fps" type="text" class="bold">
+            <form class="login100-form validate-form">
+                <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+                    <span class="label-input100">Username</span>
+                    <input class="input100" type="text" name="username" id="username" placeholder="Enter username">
+                    <span class="focus-input100"></span>
                 </div>
-            </div>
-            <!-- fps_meter -->
 
-        </div>
+                <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
+                    <span class="label-input100">Password</span>
+                    <input class="input100" type="password" name="pass" id="password" placeholder="Enter password">
+                    <span class="focus-input100"></span>
+                </div>
 
-        <!-- ssd_mobilenetv1_controls -->
-        <span id="ssd_mobilenetv1_controls" style="text-align: left">
-      <div class="row side-by-side">
-        <div class="row">
-          <label for="minConfidence">Min Confidence:</label>
-          <input disabled value="0.5" id="minConfidence" type="text" class="bold">
-        </div>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onDecreaseMinConfidence()"
-        >
-          <i class="material-icons left">-</i>
-        </button>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onIncreaseMinConfidence()"
-        >
-          <i class="material-icons left">+</i>
-        </button>
-      </div>
-    </span>
-        <!-- ssd_mobilenetv1_controls -->
+                <div class="flex-sb-m w-full p-b-30">
+                    <div class="contact100-form-checkbox">
+                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                        <label class="label-checkbox100" for="ckb1">
+                            Remember me
+                        </label>
+                    </div>
 
-        <!-- tiny_face_detector_controls -->
-        <span id="tiny_face_detector_controls" style="text-align: left">
-      <div class="row side-by-side">
-        <div class="row input-field" style="margin-right: 20px;">
-          <select id="inputSize">
-            <option value="" disabled selected>Input Size:</option>
-            <option value="160">160 x 160</option>
-            <option value="224">224 x 224</option>
-            <option value="320">320 x 320</option>
-            <option value="416">416 x 416</option>
-            <option value="512">512 x 512</option>
-            <option value="608">608 x 608</option>
-          </select>
-          <label>Input Size</label>
-        </div>
-        <div class="row">
-          <label for="scoreThreshold">Score Threshold:</label>
-          <input disabled value="0.5" id="scoreThreshold" type="text" class="bold">
-        </div>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onDecreaseScoreThreshold()"
-        >
-          <i class="material-icons left">-</i>
-        </button>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onIncreaseScoreThreshold()"
-        >
-          <i class="material-icons left">+</i>
-        </button>
-      </div>
-    </span>
-        <!-- tiny_face_detector_controls -->
+                    <div>
+                        <a href="#" class="txt1">
+                            Forgot password?
+                        </a>
+                    </div>
+                </div>
 
-        <!-- mtcnn_controls -->
-        <span id="mtcnn_controls" style="text-align: left">
-      <div class="row side-by-side">
-        <div class="row">
-          <label for="minFaceSize">Minimum Face Size:</label>
-          <input disabled value="20" id="minFaceSize" type="text" class="bold">
+                <div class="container-login100-form-btn">
+                    <button class="login100-form-btn" id="btn-login">
+                        Log in
+                    </button>
+                    <span class="validate-input" data-validate="login false"></span>
+                </div>
+            </form>
         </div>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onDecreaseMinFaceSize()"
-        >
-          <i class="material-icons left">-</i>
-        </button>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onIncreaseMinFaceSize()"
-        >
-          <i class="material-icons left">+</i>
-        </button>
-      </div>
-
-    </span>
-        <!-- mtcnn_controls -->
-        <div>
-            <a class="waves-effect waves-light btn" href="video.html">
-                <i class="material-icons">video test</i>
-            </a>
-        </div>
-        <div style="margin-top: 2em">
-            <label for="csiec">csiec:</label>
-            <input id="csiec" disabled type="text"/>
-            <label for="userwords" id="user"></label>
-            <input id="userwords" type="text"/>
-        </div>
-        <div>
-            <a class="waves-effect waves-light btn" id="btnSend">
-                <i class="material-icons">send</i>
-            </a>
-        </div>
-        <audio id="audio" autoplay="autoplay"></audio>
     </div>
+</div>
 
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script>
-        let forwardTimes = [];
-        let withFaceLandmarks = false;
-        let withBoxes = true;
+<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
 
-        function onChangeWithFaceLandmarks(e) {
-            withFaceLandmarks = $(e.target).prop('checked')
-        }
-        function onChangeHideBoundingBoxes(e) {
-            withBoxes = !$(e.target).prop('checked')
-        }
-        function updateTimeStats(timeInMs) {
-            forwardTimes = [timeInMs].concat(forwardTimes).slice(0, 30);
-            const avgTimeInMs = forwardTimes.reduce((total, t) => total + t) / forwardTimes.length;
-            $('#time').val(`${Math.round(avgTimeInMs)} ms`);
-            $('#fps').val(`${faceapi.round(1000 / avgTimeInMs)}`);
-        }
-        async function onPlay(videoEl) {
-            if(!videoEl.currentTime || videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
-                return setTimeout(() => onPlay(videoEl));
-            const options = getFaceDetectorOptions();
-            const ts = Date.now();
-            const drawBoxes = withBoxes;
-            const drawLandmarks = withFaceLandmarks;
-            let task = faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceExpressions();
-            // task = withFaceLandmarks ? task.withFaceLandmarks().withFaceExpressions() : task.withFaceExpressions();
-            const results = await task;
-            updateTimeStats(Date.now() - ts);
-            const canvas = $('#overlay').get(0);
-            const dims = faceapi.matchDimensions(canvas, videoEl, true);
+<script src="vendor/animsition/js/animsition.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="vendor/bootstrap/js/popper.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
-            const resizedResults = faceapi.resizeResults(results, dims);
-            if (drawBoxes) {
-                faceapi.draw.drawDetections(canvas, resizedResults);
-                faceapi.draw.drawFaceExpressions(canvas, resizedResults, minConfidence)
+<script src="vendor/select2/select2.min.js"></script>
+
+<script src="vendor/daterangepicker/moment.min.js"></script>
+<script src="vendor/daterangepicker/daterangepicker.js"></script>
+
+<script src="vendor/countdowntime/countdowntime.js"></script>
+
+<script src="js/main.js"></script>
+<script type="application/javascript">
+    $('#btn-login').click(function (event) {
+        event.preventDefault();
+        let input = $('.validate-input .input100');
+        for (var i = 0; i < input.length; i++) {
+            if (validate(input[i]) === false) {
+                showValidate(input[i]);
             }
-            if (drawLandmarks) {
-                faceapi.draw.drawFaceLandmarks(canvas, resizedResults);
-                faceapi.draw.drawFaceExpressions(canvas, resizedResults, minConfidence);
-            }
-            setTimeout(() => onPlay(videoEl));
         }
-        async function run() {
-            await changeFaceDetector(SSD_MOBILENETV1);
-            await faceapi.loadFaceLandmarkModel('models');
-            await faceapi.loadFaceExpressionModel('models');
-            changeInputSize(224);
-            // try to access users webcam and stream the images
-            // to the video element
-            const stream = await navigator.mediaDevices.getUserMedia({video: {}});
-            const videoEl = $('#inputVideo').get(0);
-            videoEl.srcObject = stream;
-        }
-
-        $('#btnSend').on('click', function sendMessage() {
-            let username = localStorage.getItem("username");
-            let password = localStorage.getItem("password");
-            let host = "http://104.224.196.44:4700";
-            axios.get(host, {
-                params: {
-                    username: username,
-                    password: password,
-                    text: $('#userwords').val()
-                }
-            })
-                .then(function (response) {
-
-                    if (response.data !== "login_false" && response.data !== "You are Hacker because your user info has invalid character! Welcome to www.CSIEC.com") {
-                        $('#csiec').attr('value', response.data);
-                        let audioUrl = "http://audio.dict.cc/speak.audio.php?type=mp3&lang=en&text=" + response.data;
-                        $('#audio').attr('src', audioUrl);
-                        let audio = $('#audio');
-                        audio.play();
-                    } else {
-                        $('#csiec').attr('value', 'error');
-                    }
-
-
-                    // var audio = $("#audio")[0];
-                    //
-                    // audio.pause();
-                    //
-                    // audio.play();
-                })
-
-                .catch(function (error) {
-                    console.log(error.data);
-                });
-
+        $('.validate-form .input100').each(function () {
+            $(this).focus(function () {
+                hideValidate(this);
+            });
         });
 
-        function init() {
-            $('#user').attr('value', localStorage.getItem("username"));
-            $('#csiec').attr('value', localStorage.getItem("welcome"));
-            let audioUrl = "http://audio.dict.cc/speak.audio.php?type=mp3&lang=en&text=" + localStorage.getItem("welcome");
-            $('#audio').attr('src', audioUrl);
-            let audio = $('#audio');
-            audio.play();
+        function validate(input) {
+            if ($(input).attr('type') === 'email' || $(input).attr('name') === 'email') {
+                if ($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
+                    return false;
+                }
+            } else {
+                if ($(input).val().trim() === '') {
+                    return false;
+                }
+            }
         }
 
-        $(document).ready(function() {
-            // renderNavBar('#navbar', 'video_face_tracking');
-            // alert(username + password);
+        function showValidate(input) {
+            var thisAlert = $(input).parent();
 
-            initFaceDetectionControls();
-            run();
-            init();
+            $(thisAlert).addClass('alert-validate');
+        }
+
+        function hideValidate(input) {
+            var thisAlert = $(input).parent();
+
+            $(thisAlert).removeClass('alert-validate');
+        }
+
+        let username = $("#username").val();
+        let password = $("#password").val();
+        let host = "http://104.224.196.44:4700";
+        axios.get(host, {
+            params: {
+                type: "login",
+                username: username,
+                password: password
+            }
         })
-    </script>
-    <script type="text/javascript">
-        let message_Path = './live2d/';
-        let home_Path = 'https://haremu.com/';
-    </script>
-    <script type="text/javascript" src="./live2d/js/live2d.js"></script>
-<!--    <script type="text/javascript" src="./live2d/js/message.js"></script>-->
-    <script type="text/javascript">
-        loadlive2d("live2d", "./live2d/model/live2d-widget-model-haruto/assets/haruto.model.json");
-    </script>
-</div>
+            .then(function (response) {
+
+                if (response.data !== "login_false" && response.data !== "You are Hacker because your user info has invalid character! Welcome to www.CSIEC.com") {
+                    window.location.href = "track.html";
+                    localStorage.setItem("username", username);
+                    localStorage.setItem("password", password);
+                    localStorage.setItem("welcome", response.data)
+                } else {
+                    showValidate(input[2])
+                }
+            })
+
+            .catch(function (error) {
+                console.log(error.data);
+            });
+
+    });
+
+</script>
 </body>
 </html>
