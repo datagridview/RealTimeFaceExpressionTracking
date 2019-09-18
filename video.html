@@ -185,9 +185,10 @@
         const ts = Date.now()
         const drawBoxes = withBoxes
         const drawLandmarks = withFaceLandmarks
-        let task = faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceExpressions()
+        let task = faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceExpressions().withFaceDescriptors()
         // task = withFaceLandmarks ? task.withFaceLandmarks().withFaceExpressions() : task.withFaceExpressions()
         const results = await task
+        console.log(results)
         updateTimeStats(Date.now() - ts)
         const canvas = $('#overlay').get(0)
         const dims = faceapi.matchDimensions(canvas, videoEl, true)
@@ -208,6 +209,7 @@
         await changeFaceDetector(SSD_MOBILENETV1)
         await faceapi.loadFaceLandmarkModel('models')
         await faceapi.loadFaceExpressionModel('models')
+        await faceapi.loadFaceRecognitionModel('models')
         changeInputSize(224)
         // start processing frames
         onPlay($('#inputVideo').get(0))

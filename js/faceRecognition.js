@@ -24,7 +24,7 @@ async function onPlay(videoEl) {
     const ts = Date.now();
     const drawBoxes = withBoxes;
     const drawLandmarks = withFaceLandmarks;
-    let task = faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceExpressions();
+    let task = faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceExpressions().withFaceDescriptors();
     // task = withFaceLandmarks ? task.withFaceLandmarks().withFaceExpressions() : task.withFaceExpressions();
     const results = await task;
     updateTimeStats(Date.now() - ts);
@@ -47,6 +47,7 @@ async function run() {
     await changeFaceDetector(SSD_MOBILENETV1);
     await faceapi.loadFaceLandmarkModel('models');
     await faceapi.loadFaceExpressionModel('models');
+    await faceapi.loadFaceRecognitionModel('models');
     changeInputSize(224);
     // try to access users webcam and stream the images
     // to the video element
