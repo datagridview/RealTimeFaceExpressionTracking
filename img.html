@@ -15,6 +15,7 @@
     <!--<video id="myVideo" src="media/example.mp4" />-->
 
     <script src="js/face-api.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         console.log(faceapi.nets);
         async function f1() {
@@ -38,7 +39,36 @@
             // resize the detected boxes and landmarks in case your displayed image has a different size than the original
             const resizedResults = faceapi.resizeResults(detectionsWithExpressions, displaySize);
             // const results = await faceapi.detectAllFaces(input).withFaceLandmarks()
-            console.log(resizedResults);
+
+            // TEST!!!!!
+
+            let descriptor = resizedResults[0].descriptor;
+            descriptor = descriptor.toString();
+            axios.post('http://162.105.142.90:8080/api/descriptors/',{
+                name: 'shenyuan',
+                descriptor: descriptor
+            },{
+                auth:{
+                    username: "admin",
+                    password: "heyf19961130"
+                }
+            })
+                .then(function (response) {
+                    console.log(response)
+                })
+                .catch(function (error) {
+                    console.log(error)
+                });
+
+
+            // Tes!!!
+
+
+            // resizedResults.forEach(function(resizedResult){
+            //     let descriptor = resizedResult.descriptor;
+            //     console.log(descriptor);
+            // })
+
             // draw detections into the canvas
             faceapi.draw.drawDetections(canvas, resizedResults);
             faceapi.draw.drawFaceLandmarks(canvas, resizedResults);

@@ -172,7 +172,7 @@
         </div>
       </span>
         <!-- mtcnn_controls -->
-
+    </div>
     </div>
 
 </body>
@@ -210,7 +210,6 @@
         const inputImgEl = $('#refImg').get(0);
         const canvas = $('#refImgOverlay').get(0);
         const fullFaceDescriptions = await faceapi;
-    .
         detectAllFaces(inputImgEl, getFaceDetectorOptions())
             .withFaceLandmarks()
             .withFaceDescriptors();
