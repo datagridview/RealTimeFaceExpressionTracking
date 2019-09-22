@@ -17,7 +17,7 @@
     <script src="js/face-api.js"></script>
     <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
-        console.log(faceapi.nets);
+        // console.log(faceapi.nets);
         async function f1() {
             await faceapi.nets.ssdMobilenetv1.loadFromUri('models');
             await faceapi.nets.faceLandmark68Net.loadFromUri('models');
@@ -35,6 +35,7 @@
             const detectionsWithExpressions = await faceapi
                 .detectAllFaces(input)
                 .withFaceLandmarks()
+                .withFaceExpressions()
                 .withFaceDescriptors();
             // resize the detected boxes and landmarks in case your displayed image has a different size than the original
             const resizedResults = faceapi.resizeResults(detectionsWithExpressions, displaySize);
@@ -44,21 +45,28 @@
 
             let descriptor = resizedResults[0].descriptor;
             descriptor = descriptor.toString();
-            axios.post('http://162.105.142.90:8080/api/descriptors/',{
-                name: 'shenyuan',
-                descriptor: descriptor
-            },{
-                auth:{
-                    username: "admin",
-                    password: "heyf19961130"
-                }
-            })
-                .then(function (response) {
-                    console.log(response)
-                })
-                .catch(function (error) {
-                    console.log(error)
-                });
+            console.log(resizedResults[0]);
+
+
+
+
+            // let tmp = expressions.reduce((cur, nex)=> cur>nex ? cur:nex);
+            // console.log(tmp)
+            // axios.post('http://162.105.142.90:8080/api/descriptors/',{
+            //     name: 'shenyuan',
+            //     descriptor: descriptor
+            // },{
+            //     auth:{
+            //         username: "admin",
+            //         password: "heyf19961130"
+            //     }
+            // })
+            //     .then(function (response) {
+            //         console.log(response)
+            //     })
+            //     .catch(function (error) {
+            //         console.log(error)
+            //     });
 
 
             // Tes!!!

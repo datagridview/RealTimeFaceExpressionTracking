@@ -230,6 +230,7 @@
         // resize detection and landmarks in case displayed image is smaller than
         // original size
         const resizedResults = faceapi.resizeResults(fullFaceDescriptions, inputImgEl);
+
         $('#btnAxios').on('click', function () {
             let descriptor = resizedResults[0].descriptor;
             let name = $('#userwords').val();
@@ -254,8 +255,8 @@
                 });
 
 
-            const labels = faceMatcher.labeledDescriptors
-                .map(ld => ld.label);
+            // const labels = faceMatcher.labeledDescriptors
+            //     .map(ld => ld.label);
             resizedResults.forEach(({detection, descriptor}) => {
                 const label = faceMatcher.findBestMatch(descriptor).toString();
                 const options = {label};

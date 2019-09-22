@@ -6288,7 +6288,7 @@
 
     var FaceMatcher = /** @class */ (function () {
         function FaceMatcher(inputs, distanceThreshold) {
-            if (distanceThreshold === void 0) { distanceThreshold = 0.6; }
+            if (distanceThreshold === void 0) { distanceThreshold = 0.4; }
             this._distanceThreshold = distanceThreshold;
             var inputArray = Array.isArray(inputs) ? inputs : [inputs];
             if (!inputArray.length) {
