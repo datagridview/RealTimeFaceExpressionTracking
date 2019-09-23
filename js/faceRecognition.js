@@ -72,18 +72,21 @@ async function onPlay(videoEl) {
             const label = faceMatcher.findBestMatch(descriptor).toString();
             // console.log(label);
             faceObject.names = [];
-            faceObject.names.append(label);
+            faceObject.names.push(label.split(' ')[0]);
             const options = {label};
             const drawBox = new faceapi.draw.DrawBox(detection.box, options);
             drawBox.draw(canvas);
         });
-        if(faceObject.names.indexOf(username) === -1){
-            // TODO: add the voice in the box;
+        if (-1 === faceObject.names.indexOf(username)) {
+            console.log(faceObject);
+            let audioUrl = "http://audio.dict.cc/speak.audio.php?type=mp3&lang=en&text=where are you?";
+            $('#audio').attr('src', audioUrl);
+            let audio = $('#audio');
+            // audio.play();
+        }else{
+
         }
-
     }
-
-
     if (drawBoxes) {
         // faceapi.draw.drawDetections(canvas, resizedResults);
         faceapi.draw.drawFaceExpressions(canvas, resizedResults, minConfidence);
