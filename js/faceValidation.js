@@ -24,7 +24,9 @@ function getFeatures(username) {
 
 $('#btn-login').click(async function (event) {
     event.preventDefault();
-    $('#validate').css('display','block');
+    $('#spinner').css('display', 'inline');
+    $('#login').css('display', 'none');
+    $('#validate').css('display', 'inline');
     let input = $('.validate-input .input100');
     for (var i = 0; i < input.length; i++) {
         if (validate(input[i]) === false) {
@@ -78,6 +80,8 @@ $('#btn-login').click(async function (event) {
                 sessionStorage.setItem("username", username);
                 sessionStorage.setItem("password", password);
                 sessionStorage.setItem("welcome", response.data);
+                $('#spinner').css('display', 'none');
+                $('#done').css('display', 'inline');
                 $('#Modal2').modal('show');
                 getPerson(username);
             } else {
@@ -180,6 +184,7 @@ async function run() {
     await faceapi.loadFaceLandmarkModel('models');
     await faceapi.loadFaceExpressionModel('models');
     await faceapi.loadFaceRecognitionModel('models');
+    $('#ModalSpinner').css('display', 'none');
     changeInputSize(224);
     // try to access users webcam and stream the images
     // to the video element

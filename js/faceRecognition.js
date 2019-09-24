@@ -144,7 +144,7 @@ $('#btnSend').on('click', function sendMessage() {
 });
 
 function init() {
-    $('#user').val(sessionStorage.getItem("username"));
+    $('#user').attr('value', sessionStorage.getItem("username"));
     $('#csiec').attr('value', sessionStorage.getItem("welcome"));
     let audioUrl = "http://audio.dict.cc/speak.audio.php?type=mp3&lang=en&text=" + sessionStorage.getItem("welcome");
     $('#audio').attr('src', audioUrl);

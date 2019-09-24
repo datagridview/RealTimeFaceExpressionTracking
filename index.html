@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Login V15</title>
+    <title>Csiec Chat Bot</title>
     <meta charset="UTF-8">
     <script src="js/face-api.js"></script>
     <script src="js/commons.js"></script>
@@ -29,6 +29,8 @@
 
     <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
 
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
 
@@ -76,8 +78,16 @@
                 </div>
 
                     <button class="login100-form-btn" id="btn-login">
-                        Log in
+                        <h6 id="login">Log in</h6>
+                        <i id="done" class="material-icons" style="display: none">
+                            done
+                        </i>
+                        <div id="spinner" class="spinner-border spinner-border-sm float-left" style="display: none"
+                             role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
                     </button>
+
                     <span class="validate-input" data-validate="login false"></span>
 
                 <!-- Modal -->
@@ -95,6 +105,10 @@
                                     <div class="indeterminate"></div>
                                 </div>
                                 <div  class="center-content page-container" style="position: relative">
+                                    <div id="ModalSpinner" class="spinner-border spinner-border-sm float-left"
+                                         style="display: inline" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
                                     <video onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
                                     <canvas id="overlay"></canvas>
                                 </div>

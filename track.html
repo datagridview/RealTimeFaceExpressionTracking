@@ -6,7 +6,7 @@
     <script src="js/faceDetectionControls.js"></script>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
-    <link rel="stylesheet" href="/live2d/css/live2d.css" />
+    <link rel="stylesheet" href="live2d/css/live2d.css"/>
     <link rel="stylesheet" href="css/easyui.css"/>
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
@@ -17,7 +17,11 @@
 
 </head>
 <body style="background-color: #EBEEEF">
-<canvas id="live2d" style="position: absolute; z-index:10" height="600px" class="live2d"></canvas>
+<div id="landlord" style="position: absolute;left: 50px;top: 100px">
+    <div class="message" style="opacity:0"></div>
+    <canvas id="live2d" height="500px" class="live2d"></canvas>
+    <div class="hide-button">hide</div>
+</div>
 
 <div style="text-align: center; background-color: #EBEEEF">
     <div class="center-content page-container" >
@@ -171,10 +175,10 @@
         let home_Path = 'https://haremu.com/';
     </script>
     <script type="text/javascript" src="./live2d/js/live2d.js"></script>
-    <!--    <script type="text/javascript" src="./live2d/js/message.js"></script>-->
+<script type="text/javascript" src="./live2d/js/message.js"></script>
     <script type="text/javascript">
         loadlive2d("live2d", "./live2d/model/live2d-widget-model-haruto/assets/haruto.model.json");
-        $("#live2d").draggable();
+        $("#landlord").draggable();
     </script>
 </body>
 </html>
