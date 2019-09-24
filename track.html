@@ -13,7 +13,7 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="js/jquery.easyui.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 </head>
 <body style="background-color: #EBEEEF">
@@ -30,7 +30,7 @@
             <canvas id="overlay" />
         </div>
 
-        <div class="row side-by-side">
+        <div class="row side-by-side" style="display: none">
 
             <!-- face_detector_selection_control -->
             <div id="face_detector_selection_control" class="row input-field" style="margin-right: 20px; text-align: left">
@@ -66,7 +66,7 @@
         </div>
 
         <!-- ssd_mobilenetv1_controls -->
-        <span id="ssd_mobilenetv1_controls" style="text-align: left">
+        <span id="ssd_mobilenetv1_controls" style="text-align: left;display: none">
       <div class="row side-by-side">
         <div class="row">
           <label for="minConfidence">Min Confidence:</label>
@@ -89,7 +89,7 @@
         <!-- ssd_mobilenetv1_controls -->
 
         <!-- tiny_face_detector_controls -->
-        <span id="tiny_face_detector_controls" style="text-align: left">
+        <span id="tiny_face_detector_controls" style="text-align: left;display: none">
       <div class="row side-by-side">
         <div class="row input-field" style="margin-right: 20px;">
           <select id="inputSize">
@@ -124,7 +124,7 @@
         <!-- tiny_face_detector_controls -->
 
         <!-- mtcnn_controls -->
-        <span id="mtcnn_controls" style="text-align: left">
+        <span id="mtcnn_controls" style="text-align: left;display: none">
       <div class="row side-by-side">
         <div class="row">
           <label for="minFaceSize">Minimum Face Size:</label>
@@ -154,13 +154,11 @@
         <div style="margin-top: 2em">
             <label for="csiec">csiec:</label>
             <input id="csiec" disabled type="text"/>
-            <label for="userwords" id="user"></label>
+            <label for="userwords" id="user">user</label>
             <input id="userwords" type="text"/>
         </div>
 
-            <a class="waves-effect waves-light btn" id="btnSend">
-                <i class="material-icons">send</i>
-            </a>
+        <a class="btn-floating btn-large pulse" id="btnSend"><i class="material-icons">cloud</i></a>
 
         <audio id="audio" autoplay="autoplay"></audio>
     </div>

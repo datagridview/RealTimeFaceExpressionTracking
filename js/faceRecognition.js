@@ -4,7 +4,7 @@ let withBoxes = true;
 let faceMatcher = null;
 let username = sessionStorage.getItem("username");
 let password = sessionStorage.getItem("password");
-
+let absentCount = 0;
 function onChangeWithFaceLandmarks(e) {
     withFaceLandmarks = $(e.target).prop('checked')
 }
@@ -62,29 +62,30 @@ async function onPlay(videoEl) {
             [labeldFeatures]
         ),
     ];
-
+    let faceObject = {};
+    faceObject.names = [];
     if(results.length){
         faceMatcher = new faceapi.FaceMatcher(labeledDescriptors);
-        let faceObject = {};
         resizedResults.forEach(({detection, descriptor, expressions}) => {
             const expression = Object.keys(expressions).sort(function(a,b){return expressions[b]-expressions[a]})[0];
             // console.log(expression);
             const label = faceMatcher.findBestMatch(descriptor).toString();
             // console.log(label);
-            faceObject.names = [];
-            faceObject.names.push(label.split(' ')[0]);
+            faceObject.names.push((label !== "unknown")? label.split(' ')[0]:label);
             const options = {label};
             const drawBox = new faceapi.draw.DrawBox(detection.box, options);
             drawBox.draw(canvas);
         });
-        if (-1 === faceObject.names.indexOf(username)) {
-            console.log(faceObject);
+        // console.log(faceObject.names);
+    }
+    if (-1 === faceObject.names.indexOf(username) ) {
+        absentCount ++;
+        if(absentCount === 50){
+            console.log(faceObject.names.indexOf(username));
             let audioUrl = "http://audio.dict.cc/speak.audio.php?type=mp3&lang=en&text=where are you?";
             $('#audio').attr('src', audioUrl);
             let audio = $('#audio');
-            // audio.play();
-        }else{
-
+            absentCount = 0;
         }
     }
     if (drawBoxes) {
@@ -95,14 +96,6 @@ async function onPlay(videoEl) {
         faceapi.draw.drawFaceLandmarks(canvas, resizedResults);
         faceapi.draw.drawFaceExpressions(canvas, resizedResults, minConfidence);
     }
-
-    // resizedResults.forEach(({detection, descriptor}) => {
-    //     const label = faceMatcher.findBestMatch(descriptor).toString();
-    //     const options = {label};
-    //     const drawBox = new faceapi.draw.DrawBox(detection.box, options);
-    //     drawBox.draw(canvas);
-    // });
-
     setTimeout(() => onPlay(videoEl));
 }
 
@@ -151,7 +144,7 @@ $('#btnSend').on('click', function sendMessage() {
 });
 
 function init() {
-    $('#user').attr('value', sessionStorage.getItem("username"));
+    $('#user').val(sessionStorage.getItem("username"));
     $('#csiec').attr('value', sessionStorage.getItem("welcome"));
     let audioUrl = "http://audio.dict.cc/speak.audio.php?type=mp3&lang=en&text=" + sessionStorage.getItem("welcome");
     $('#audio').attr('src', audioUrl);

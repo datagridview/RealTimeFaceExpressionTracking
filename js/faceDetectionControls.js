@@ -6,7 +6,7 @@ const MTCNN = 'mtcnn'
 let selectedFaceDetector = SSD_MOBILENETV1
 
 // ssd_mobilenetv1 options
-let minConfidence = 0.5
+let minConfidence = 0.4
 
 // tiny_face_detector options
 let inputSize = 512

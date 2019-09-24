@@ -3,15 +3,15 @@
 <head>
     <title>Login V15</title>
     <meta charset="UTF-8">
-
-
-    <!--https to http-->
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <script src="js/face-api.js"></script>
+    <script src="js/commons.js"></script>
+    <script src="js/faceDetectionControls.js"></script>
 
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+    <link rel="stylesheet" href="styles.css">
 
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
 
@@ -31,6 +31,8 @@
 
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
+
+
 
 
 </head>
@@ -73,12 +75,63 @@
                     </div>
                 </div>
 
-                <div class="container-login100-form-btn">
                     <button class="login100-form-btn" id="btn-login">
                         Log in
                     </button>
                     <span class="validate-input" data-validate="login false"></span>
+
+                <!-- Modal -->
+                <div class="modal fade"  id="Modal1" tabindex="-1" role="dialog" aria-labelledby="Modal1Title" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered " role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Modal1Title">Face Validation</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="text-align: center">
+                                <div class="progress" id="loader">
+                                    <div class="indeterminate"></div>
+                                </div>
+                                <div  class="center-content page-container" style="position: relative">
+                                    <video onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
+                                    <canvas id="overlay"></canvas>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <!-- Modal -->
+                <div class="modal fade"  id="Modal2" tabindex="-1" role="dialog" aria-labelledby="Modal2Title" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content ">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="Modal2Title">Notification</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="text-align: center">
+                                Password Validation Success.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button class="btn btn-primary" id="add-reference">
+                                    Add Reference
+                                </button>
+                                <button class="btn btn-primary" id="validate" data-toggle="modal" data-target="#Modal1">
+                                    Face Validation
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </form>
         </div>
     </div>
@@ -86,10 +139,10 @@
 
 
 <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 <script src="vendor/animsition/js/animsition.min.js"></script>
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="vendor/bootstrap/js/popper.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
 <script src="vendor/select2/select2.min.js"></script>
@@ -100,73 +153,8 @@
 <script src="vendor/countdowntime/countdowntime.js"></script>
 
 <script src="js/main.js"></script>
-<script type="application/javascript">
-    $('#btn-login').click(function (event) {
-        event.preventDefault();
-        let input = $('.validate-input .input100');
-        for (var i = 0; i < input.length; i++) {
-            if (validate(input[i]) === false) {
-                showValidate(input[i]);
-            }
-        }
-        $('.validate-form .input100').each(function () {
-            $(this).focus(function () {
-                hideValidate(this);
-            });
-        });
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="js/faceValidation.js"></script>
 
-        function validate(input) {
-            if ($(input).attr('type') === 'email' || $(input).attr('name') === 'email') {
-                if ($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
-                    return false;
-                }
-            } else {
-                if ($(input).val().trim() === '') {
-                    return false;
-                }
-            }
-        }
-
-        function showValidate(input) {
-            var thisAlert = $(input).parent();
-
-            $(thisAlert).addClass('alert-validate');
-        }
-
-        function hideValidate(input) {
-            var thisAlert = $(input).parent();
-
-            $(thisAlert).removeClass('alert-validate');
-        }
-
-        let username = $("#username").val();
-        let password = $("#password").val();
-        let host = "http://104.224.196.44:4700";
-        axios.get(host, {
-            params: {
-                type: "login",
-                username: username,
-                password: password
-            }
-        })
-            .then(function (response) {
-
-                if (response.data !== "login_false" && response.data !== "You are Hacker because your user info has invalid character! Welcome to www.CSIEC.com") {
-                    window.location.href = "track.html";
-                    sessionStorage.setItem("username", username);
-                    sessionStorage.setItem("password", password);
-                    sessionStorage.setItem("welcome", response.data)
-                } else {
-                    showValidate(input[2])
-                }
-            })
-
-            .catch(function (error) {
-                console.log(error.data);
-            });
-
-    });
-
-</script>
 </body>
 </html>

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/0.5.0/js/sql.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
 <!--<div id="navbar"></div>-->
@@ -21,7 +21,7 @@
         <div class="indeterminate"></div>
     </div>
     <div style="position: relative" class="margin">
-        <img id="refImg" src="" style="max-width: 800px;"/>
+        <img id="refImg" src="" style="max-width: 500px;"/>
         <canvas id="refImgOverlay" class="overlay"/>
     </div>
 
@@ -38,152 +38,51 @@
                        accept=".jpg, .jpeg, .png">
             </div>
         </div>
-        <div class="margin">
-            <label for="refImgUrlInput">Get image from URL:</label>
-            <input id="refImgUrlInput" type="text" class="bold">
-        </div>
+        <!--<div class="margin">-->
+            <!--<label for="refImgUrlInput">Get image from URL:</label>-->
+            <!--<input id="refImgUrlInput" type="text" class="bold">-->
+        <!--</div>-->
         <button
                 id="btnAxios"
-                class="waves-effect waves-light btn"
-                onclick="loadRefImageFromUrl()"
-        >
-            Ok
+                class="btn-floating btn-large pulse">
+                <!--onclick="loadRefImageFromUrl()"-->
+
+            <i class="material-icons">cloud</i>
         </button>
-        <!-- image_selection_control -->
+        <button type="button" id="redirect" class="btn-floating btn-large pulse" data-dismiss="modal" style="display: none">
+            <i class="material-icons">launch</i>
+        </button>
 
+        <!--<div class="modal fade"  id="Modal">-->
+            <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
+                <!--<div class="modal-content ">-->
+                    <!--<div class="modal-header">-->
+                        <!--<h5 class="modal-title" id="ModalTitle">Notification</h5>-->
+                        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+                            <!--<span aria-hidden="true">&times;</span>-->
+                        <!--</button>-->
+                    <!--</div>-->
+                    <!--<div class="modal-body" style="text-align: center">-->
+                        <!--Reference Photo Uploaded.-->
+                    <!--</div>-->
+                    <!--<div class="modal-footer">-->
+
+                        <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
     </div>
-
-    <!--    <p> Query Image: </p>-->
-
-    <!--    <div style="position: relative" class="margin">-->
-    <!--        <img id="queryImg" src="" style="max-width: 800px;"/>-->
-    <!--        <canvas id="queryImgOverlay" class="overlay"/>-->
-    <!--    </div>-->
-
-
-    <!--    <div class="row side-by-side">-->
-
-    <!--        &lt;!&ndash; image_selection_control &ndash;&gt;-->
-    <!--        <div class="row">-->
-    <!--            <label>Upload Image:</label>-->
-    <!--            <div>-->
-    <!--                <input id="queryImgUploadInput" type="file" class="bold" onchange="uploadQueryImage()"-->
-    <!--                       accept=".jpg, .jpeg, .png">-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--        <div class="row">-->
-    <!--            <label for="queryImgUrlInput">Get image from URL:</label>-->
-    <!--            <input id="queryImgUrlInput" type="text" class="bold">-->
-    <!--        </div>-->
-    <!--        <button-->
-    <!--                class="waves-effect waves-light btn"-->
-    <!--                onclick="loadQueryImageFromUrl()"-->
-    <!--        >-->
-    <!--            Ok-->
-    <!--        </button>-->
-    <!--        &lt;!&ndash; image_selection_control &ndash;&gt;-->
-
-    <!--    </div>-->
-
-    <!--    <div class="center-content">-->
-    <!--        &lt;!&ndash; face_detector_selection_control &ndash;&gt;-->
-    <!--        <div id="face_detector_selection_control" class="row input-field">-->
-    <!--            <select id="selectFaceDetector">-->
-    <!--                <option value="ssd_mobilenetv1">SSD Mobilenet V1</option>-->
-    <!--                <option value="tiny_face_detector">Tiny Face Detector</option>-->
-    <!--                <option value="mtcnn">MTCNN</option>-->
-    <!--            </select>-->
-    <!--            <label>Select Face Detector</label>-->
-    <!--        </div>-->
-    <!--        &lt;!&ndash; face_detector_selection_control &ndash;&gt;-->
-
-    <!--        &lt;!&ndash; ssd_mobilenetv1_controls &ndash;&gt;-->
-    <!--        <span id="ssd_mobilenetv1_controls">-->
-    <!--        <div class="row side-by-side">-->
-    <!--          <div class="row">-->
-    <!--            <label for="minConfidence">Min Confidence:</label>-->
-    <!--            <input disabled value="0.5" id="minConfidence" type="text" class="bold">-->
-    <!--          </div>-->
-    <!--          <button-->
-    <!--                  class="waves-effect waves-light btn"-->
-    <!--                  onclick="onDecreaseMinConfidence()"-->
-    <!--          >-->
-    <!--            <i class="material-icons left">-</i>-->
-    <!--          </button>-->
-    <!--          <button-->
-    <!--                  class="waves-effect waves-light btn"-->
-    <!--                  onclick="onIncreaseMinConfidence()"-->
-    <!--          >-->
-    <!--            <i class="material-icons left">+</i>-->
-    <!--          </button>-->
-    <!--        </div>-->
-    <!--      </span>-->
-    <!--        &lt;!&ndash; ssd_mobilenetv1_controls &ndash;&gt;-->
-
-    <!--        &lt;!&ndash; tiny_face_detector_controls &ndash;&gt;-->
-    <!--        <span id="tiny_face_detector_controls">-->
-    <!--        <div class="row side-by-side">-->
-    <!--          <div class="row input-field" style="margin-right: 20px;">-->
-    <!--            <select id="inputSize">-->
-    <!--              <option value="" disabled selected>Input Size:</option>-->
-    <!--              <option value="160">160 x 160</option>-->
-    <!--              <option value="224">224 x 224</option>-->
-    <!--              <option value="320">320 x 320</option>-->
-    <!--              <option value="416">416 x 416</option>-->
-    <!--              <option value="512">512 x 512</option>-->
-    <!--              <option value="608">608 x 608</option>-->
-    <!--            </select>-->
-    <!--            <label>Input Size</label>-->
-    <!--          </div>-->
-    <!--          <div class="row">-->
-    <!--            <label for="scoreThreshold">Score Threshold:</label>-->
-    <!--            <input disabled value="0.5" id="scoreThreshold" type="text" class="bold">-->
-    <!--          </div>-->
-    <!--          <button-->
-    <!--                  class="waves-effect waves-light btn"-->
-    <!--                  onclick="onDecreaseScoreThreshold()"-->
-    <!--          >-->
-    <!--            <i class="material-icons left">-</i>-->
-    <!--          </button>-->
-    <!--          <button-->
-    <!--                  class="waves-effect waves-light btn"-->
-    <!--                  onclick="onIncreaseScoreThreshold()"-->
-    <!--          >-->
-    <!--            <i class="material-icons left">+</i>-->
-    <!--          </button>-->
-    <!--        </div>-->
-    <!--      </span>-->
-    <!--        &lt;!&ndash; tiny_face_detector_controls &ndash;&gt;-->
-
-    <!--        &lt;!&ndash; mtcnn_controls &ndash;&gt;-->
-    <!--        <span id="mtcnn_controls">-->
-    <!--        <div class="row side-by-side">-->
-    <!--          <div class="row">-->
-    <!--            <label for="minFaceSize">Minimum Face Size:</label>-->
-    <!--            <input disabled value="20" id="minFaceSize" type="text" class="bold">-->
-    <!--          </div>-->
-    <!--          <button-->
-    <!--                  class="waves-effect waves-light btn"-->
-    <!--                  onclick="onDecreaseMinFaceSize()"-->
-    <!--          >-->
-    <!--            <i class="material-icons left">-</i>-->
-    <!--          </button>-->
-    <!--          <button-->
-    <!--                  class="waves-effect waves-light btn"-->
-    <!--                  onclick="onIncreaseMinFaceSize()"-->
-    <!--          >-->
-    <!--            <i class="material-icons left">+</i>-->
-    <!--          </button>-->
-    <!--        </div>-->
-    <!--      </span>-->
-    <!-- mtcnn_controls -->
-    <!--    </div>-->
 </div>
 </div>
 </body>
 <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     let faceMatcher = null;
+
+    $('#redirect').click(function (){
+        window.location.href= "index.html";
+    });
 
     async function uploadRefImage(e) {
         const imgFile = $('#refImgUploadInput').get(0).files[0];
@@ -196,22 +95,8 @@
         const img = await requestExternalImage($('#refImgUrlInput').val());
         $('#refImg').get(0).src = img.src;
         updateReferenceImageResults();
+
     }
-
-    // async function uploadQueryImage(e) {
-    //     const imgFile = $('#queryImgUploadInput').get(0).files[0];
-    //     const img = await faceapi.bufferToImage(imgFile);
-    //     $('#queryImg').get(0).src = img.src;
-    //     updateQueryImageResults();
-    // }
-    //
-    // async function loadQueryImageFromUrl(url) {
-    //     const img = await requestExternalImage($('#queryImgUrlInput').val());
-    //     $('#queryImg').get(0).src = img.src;
-    //     updateQueryImageResults();
-    // }
-
-
 
     async function updateReferenceImageResults() {
         const inputImgEl = $('#refImg').get(0);
@@ -231,7 +116,8 @@
         // original size
         const resizedResults = faceapi.resizeResults(fullFaceDescriptions, inputImgEl);
 
-        $('#btnAxios').on('click', function () {
+        $('#btnAxios').on('click', function (e) {
+            e.preventDefault();
             let descriptor = resizedResults[0].descriptor;
             let name = $('#userwords').val();
             console.log(name);
@@ -248,53 +134,21 @@
                 }
             })
                 .then(function (response) {
-                    console.log(response)
+                    console.log(response);
+                    $('#redirect').css('display','inline');
                 })
                 .catch(function (error) {
                     console.log(error)
                 });
 
-
-            // const labels = faceMatcher.labeledDescriptors
-            //     .map(ld => ld.label);
             resizedResults.forEach(({detection, descriptor}) => {
                 const label = faceMatcher.findBestMatch(descriptor).toString();
                 const options = {label};
                 const drawBox = new faceapi.draw.DrawBox(detection.box, options);
                 drawBox.draw(canvas);
-            })
+            });
+
         });
-        // draw boxes with the corresponding label as text
-        //
-        // let descriptor = resizedResults[0].descriptor;
-        // let name =  $('#userwords').text()
-        // console.log(descriptor)
-        // descriptor = descriptor.toString();
-        // axios.post('http://162.105.142.90:8080/api/descriptors/',{
-        //     name:name,
-        //     descriptor: descriptor
-        // },{
-        //     auth:{
-        //         username: "admin",
-        //         password: "heyf19961130"
-        //     }
-        // })
-        //     .then(function (response) {
-        //         console.log(response)
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error)
-        //     });
-        //
-        //
-        // const labels = faceMatcher.labeledDescriptors
-        //     .map(ld => ld.label);
-        // resizedResults.forEach(({detection, descriptor}) => {
-        //     const label = faceMatcher.findBestMatch(descriptor).toString();
-        //     const options = {label};
-        //     const drawBox = new faceapi.draw.DrawBox(detection.box, options);
-        //     drawBox.draw(canvas);
-        // })
     }
 
     async function updateQueryImageResults() {
@@ -332,9 +186,9 @@
     }
 
     $(document).ready(function () {
+        $('#userwords').val(sessionStorage.getItem('username'));
         initFaceDetectionControls();
-        run()
+        run();
     })
 </script>
-</body>
 </html>
