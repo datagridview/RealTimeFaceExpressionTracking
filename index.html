@@ -6,169 +6,148 @@
     <script src="js/face-api.js"></script>
     <script src="js/commons.js"></script>
     <script src="js/faceDetectionControls.js"></script>
-
-
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
-    <link rel="stylesheet" href="styles.css">
-
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
-
     <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
-
     <link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
-
     <link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
-
     <link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
-
     <link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
-
     <link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
-
-
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/util.css">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-
-
-
-
 </head>
 <body>
 
-<div class="limiter">
-    <div class="container-login100">
-        <div class="wrap-login100">
-            <div class="login100-form-title" style="background-image: url(images/LIVE.gif);">
-					<span class="login100-form-title-1" style="margin-left: 50%">
-						CSIEC
-					</span>
-            </div>
-
-            <form class="login100-form validate-form">
-                <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
-                    <span class="label-input100">Username</span>
-                    <input class="input100" type="text" name="username" id="username" placeholder="Enter username">
-                    <span class="focus-input100"></span>
+    <div class="limiter">
+        <div class="container-login100">
+            <div class="wrap-login100">
+                <div class="login100-form-title" style="background-image: url(images/LIVE.gif);">
+                        <span class="login100-form-title-1" style="margin-left: 50%">
+                            CSIEC
+                        </span>
                 </div>
 
-                <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
-                    <span class="label-input100">Password</span>
-                    <input class="input100" type="password" name="pass" id="password" placeholder="Enter password">
-                    <span class="focus-input100"></span>
-                </div>
-
-                <div class="flex-sb-m w-full p-b-30">
-                    <div class="contact100-form-checkbox">
-                        <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
-                        <label class="label-checkbox100" for="ckb1">
-                            Remember me
-                        </label>
+                <form class="login100-form validate-form">
+                    <div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+                        <span class="label-input100">Username</span>
+                        <input class="input100" type="text" name="username" id="username" placeholder="Enter username">
+                        <span class="focus-input100"></span>
                     </div>
 
-                    <div>
-                        <a href="#" class="txt1">
-                            Forgot password?
-                        </a>
+                    <div class="wrap-input100 validate-input m-b-18" data-validate="Password is required">
+                        <span class="label-input100">Password</span>
+                        <input class="input100" type="password" name="pass" id="password" placeholder="Enter password">
+                        <span class="focus-input100"></span>
                     </div>
-                </div>
 
-                    <button class="login100-form-btn" id="btn-login">
-                        <h6 id="login">Log in</h6>
-                        <i id="done" class="material-icons" style="display: none">
-                            done
-                        </i>
-                        <div id="spinner" class="spinner-border spinner-border-sm float-left" style="display: none"
-                             role="status">
-                            <span class="sr-only">Loading...</span>
+                    <div class="flex-sb-m w-full p-b-30">
+                        <div class="contact100-form-checkbox">
+                            <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me">
+                            <label class="label-checkbox100" for="ckb1">
+                                Remember me
+                            </label>
                         </div>
-                    </button>
 
-                    <span class="validate-input" data-validate="login false"></span>
+                        <div>
+                            <a href="#" class="txt1">
+                                Forgot password?
+                            </a>
+                        </div>
+                    </div>
 
-                <!-- Modal -->
-                <div class="modal fade"  id="Modal1" tabindex="-1" role="dialog" aria-labelledby="Modal1Title" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered " role="document">
-                        <div class="modal-content ">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="Modal1Title">Face Validation</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
+                        <button class="login100-form-btn" id="btn-login">
+                            <h6 id="login">Log in</h6>
+                            <i id="done" class="material-icons" style="display: none">
+                                done
+                            </i>
+                            <div id="spinner" class="spinner-border spinner-border-sm float-left" style="display: none"
+                                 role="status">
+                                <span class="sr-only">Loading...</span>
                             </div>
-                            <div class="modal-body" style="text-align: center">
-                                <div class="progress" id="loader">
-                                    <div class="indeterminate"></div>
+                        </button>
+
+                        <span class="validate-input" data-validate="login false"></span>
+
+                    <!-- Modal -->
+                    <div class="modal fade"  id="Modal1" tabindex="-1" role="dialog" aria-labelledby="Modal1Title" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered " role="document">
+                            <div class="modal-content ">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="Modal1Title">Face Validation</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                 </div>
-                                <div  class="center-content page-container" style="position: relative">
-                                    <div id="ModalSpinner" class="spinner-border spinner-border-sm float-left"
-                                         style="display: inline" role="status">
-                                        <span class="sr-only">Loading...</span>
+                                <div class="modal-body" style="text-align: center">
+                                    <div class="progress" id="loader">
+                                        <div class="indeterminate"></div>
                                     </div>
-                                    <video onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
-                                    <canvas id="overlay"></canvas>
+                                    <div  class="center-content page-container" style="position: relative">
+                                        <div id="ModalSpinner" class="spinner-border spinner-border-sm float-left"
+                                             style="display: inline" role="status">
+                                            <span class="sr-only">Loading...</span>
+                                        </div>
+                                        <video onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
+                                        <canvas id="overlay"></canvas>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <!--<button type="button" class="btn btn-primary">Save changes</button>-->
                                 </div>
                             </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade"  id="Modal2" tabindex="-1" role="dialog" aria-labelledby="Modal2Title" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content ">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="Modal2Title">Notification</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="text-align: center">
+                                    Password Validation Success.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button class="btn btn-primary" id="add-reference">
+                                        Add Reference
+                                    </button>
+                                    <button class="btn btn-primary" id="validate" data-toggle="modal" data-target="#Modal1">
+                                        Face Validation
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Modal -->
-                <div class="modal fade"  id="Modal2" tabindex="-1" role="dialog" aria-labelledby="Modal2Title" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content ">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="Modal2Title">Notification</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body" style="text-align: center">
-                                Password Validation Success.
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button class="btn btn-primary" id="add-reference">
-                                    Add Reference
-                                </button>
-                                <button class="btn btn-primary" id="validate" data-toggle="modal" data-target="#Modal1">
-                                    Face Validation
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
 
-<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-<script src="vendor/animsition/js/animsition.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
-
-<script src="vendor/select2/select2.min.js"></script>
-
-<script src="vendor/daterangepicker/moment.min.js"></script>
-<script src="vendor/daterangepicker/daterangepicker.js"></script>
-
-<script src="vendor/countdowntime/countdowntime.js"></script>
-
-<script src="js/main.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script src="js/faceValidation.js"></script>
+    <script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script src="vendor/animsition/js/animsition.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="vendor/select2/select2.min.js"></script>
+    <script src="vendor/daterangepicker/moment.min.js"></script>
+    <script src="vendor/daterangepicker/daterangepicker.js"></script>
+    <script src="vendor/countdowntime/countdowntime.js"></script>
+    <script src="js/main.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="js/faceValidation.js"></script>
 
 </body>
 </html>

@@ -4,6 +4,7 @@ let withFaceLandmarks = false;
 let withBoxes = true;
 let faceMatcher = null;
 
+// return the feature of the username
 function getFeatures(username) {
     let result = axios.get("http://162.105.142.90:8080/api/persons/?name="+username)
         .then(function (response) {
@@ -13,7 +14,6 @@ function getFeatures(username) {
             else if(response.data.count === 0){
                 return "0";
             }
-
         })
         .catch(function (e) {
             console.log(e);
@@ -21,14 +21,15 @@ function getFeatures(username) {
     return result;
 }
 
-
 $('#btn-login').click(async function (event) {
     event.preventDefault();
     $('#spinner').css('display', 'inline');
     $('#login').css('display', 'none');
     $('#validate').css('display', 'inline');
+
+    // input validation
     let input = $('.validate-input .input100');
-    for (var i = 0; i < input.length; i++) {
+    for (let i = 0; i < input.length; i++) {
         if (validate(input[i]) === false) {
             showValidate(input[i]);
         }
@@ -38,7 +39,6 @@ $('#btn-login').click(async function (event) {
             hideValidate(this);
         });
     });
-
     function validate(input) {
         if ($(input).attr('type') === 'email' || $(input).attr('name') === 'email') {
             if ($(input).val().trim().match(/^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{1,5}|[0-9]{1,3})(\]?)$/) == null) {
@@ -50,19 +50,20 @@ $('#btn-login').click(async function (event) {
             }
         }
     }
-
     function showValidate(input) {
-        var thisAlert = $(input).parent();
+        let thisAlert = $(input).parent();
 
         $(thisAlert).addClass('alert-validate');
     }
 
     function hideValidate(input) {
-        var thisAlert = $(input).parent();
+        let thisAlert = $(input).parent();
 
         $(thisAlert).removeClass('alert-validate');
     }
 
+    // send login form
+    // 如果要直接登录可以直接把这边注释掉而直接跳转到track.html
     let username = $("#username").val();
     let password = $("#password").val();
     let host = "http://104.224.196.44:4700";
@@ -91,9 +92,9 @@ $('#btn-login').click(async function (event) {
         .catch(function (error) {
             console.log(error.data);
         });
-
 });
 
+// popup modals
 $('#validate').click(function (e) {
     e.preventDefault();
     $('#Modal2').modal('toggle');
@@ -102,11 +103,13 @@ $('#validate').click(function (e) {
     run();
 });
 
+// redirect to the facerec.html to add reference photos
 $('#add-reference').click(function (e) {
     e.preventDefault();
     window.open('facerec.html');
 });
 
+// update the fps label
 function updateTimeStats(timeInMs) {
     forwardTimes = [timeInMs].concat(forwardTimes).slice(0, 30);
     const avgTimeInMs = forwardTimes.reduce((total, t) => total + t) / forwardTimes.length;
@@ -114,6 +117,7 @@ function updateTimeStats(timeInMs) {
     $('#fps').val(`${faceapi.round(1000 / avgTimeInMs)}`);
 }
 
+// cycle function of video capture
 async function onPlay(videoEl) {
     if (!videoEl.currentTime || videoEl.paused || videoEl.ended || !isFaceDetectionModelLoaded())
         return setTimeout(() => onPlay(videoEl));
@@ -121,19 +125,14 @@ async function onPlay(videoEl) {
     const ts = Date.now();
     const drawBoxes = withBoxes;
     const drawLandmarks = withFaceLandmarks;
-    let task = faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceExpressions().withFaceDescriptors();
-    // task = withFaceLandmarks ? task.withFaceLandmarks().withFaceExpressions() : task.withFaceExpressions();
-    const results = await task;
-
+    let results = await faceapi.detectAllFaces(videoEl, options).withFaceLandmarks().withFaceExpressions().withFaceDescriptors();
     updateTimeStats(Date.now() - ts);
     const canvas = $('#overlay').get(0);
     canvas.innerHeight = videoEl.videoHeight;
     console.log(videoEl.videoHeight);
     canvas.innerWidth = videoEl.videoWidth;
     const dims = faceapi.matchDimensions(canvas, videoEl, true);
-
     const resizedResults = faceapi.resizeResults(results, dims);
-
 
     let username = sessionStorage.getItem("username");
     let labeldFeatures = sessionStorage.getItem("features");
@@ -179,6 +178,7 @@ async function getPerson(username) {
     }
 }
 
+// the async function the initalize the Model
 async function run() {
     await changeFaceDetector(SSD_MOBILENETV1);
     await faceapi.loadFaceLandmarkModel('models');

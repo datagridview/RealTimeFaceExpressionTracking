@@ -4,7 +4,7 @@
     <script src="js/face-api.js"></script>
     <script src="js/commons.js"></script>
     <script src="js/faceDetectionControls.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
     <link rel="stylesheet" href="live2d/css/live2d.css"/>
     <link rel="stylesheet" href="css/easyui.css"/>
@@ -17,15 +17,17 @@
 
 </head>
 <body style="background-color: #EBEEEF">
-<div id="landlord" style="position: absolute;left: 50px;top: 100px">
-    <div class="message" style="opacity:0"></div>
-    <canvas id="live2d" height="500px" class="live2d"></canvas>
-    <div class="hide-button">hide</div>
-</div>
 
-<div style="text-align: center; background-color: #EBEEEF">
+    <!--live2d Model-->
+    <div id="landlord" style="position: absolute;left: 50px;top: 100px">
+        <div class="message card-panel teal lighten-2" style="opacity:0"></div>
+        <canvas id="live2d" height="500px" class="live2d"></canvas>
+        <div id="hide-button" class="btn-floating btn-large waves-effect waves-light">hide</div>
+    </div>
+
+    <!--main body-->
+    <div style="text-align: center; background-color: #EBEEEF">
     <div class="center-content page-container" >
-
         <div class="progress" id="loader">
             <div class="indeterminate"></div>
         </div>
@@ -33,9 +35,7 @@
             <video onloadedmetadata="onPlay(this)" id="inputVideo" autoplay muted playsinline></video>
             <canvas id="overlay" />
         </div>
-
         <div class="row side-by-side" style="display: none">
-
             <!-- face_detector_selection_control -->
             <div id="face_detector_selection_control" class="row input-field" style="margin-right: 20px; text-align: left">
                 <select id="selectFaceDetector">
@@ -66,95 +66,95 @@
                 </div>
             </div>
             <!-- fps_meter -->
-
         </div>
 
         <!-- ssd_mobilenetv1_controls -->
         <span id="ssd_mobilenetv1_controls" style="text-align: left;display: none">
-      <div class="row side-by-side"  style="display: none">
-        <div class="row">
-          <label for="minConfidence">Min Confidence:</label>
-          <input disabled value="0.5" id="minConfidence" type="text" class="bold">
-        </div>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onDecreaseMinConfidence()"
-        >
-          <i class="material-icons left">-</i>
-        </button>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onIncreaseMinConfidence()"
-        >
-          <i class="material-icons left">+</i>
-        </button>
-      </div>
-    </span>
+          <div class="row side-by-side"  style="display: none">
+            <div class="row">
+              <label for="minConfidence">Min Confidence:</label>
+              <input disabled value="0.5" id="minConfidence" type="text" class="bold">
+            </div>
+            <button
+                    class="waves-effect waves-light btn"
+                    onclick="onDecreaseMinConfidence()"
+            >
+              <i class="material-icons left">-</i>
+            </button>
+            <button
+                    class="waves-effect waves-light btn"
+                    onclick="onIncreaseMinConfidence()"
+            >
+              <i class="material-icons left">+</i>
+            </button>
+          </div>
+        </span>
         <!-- ssd_mobilenetv1_controls -->
 
         <!-- tiny_face_detector_controls -->
         <span id="tiny_face_detector_controls" style="text-align: left;display: none">
-      <div class="row side-by-side">
-        <div class="row input-field" style="margin-right: 20px;">
-          <select id="inputSize">
-            <option value="" disabled selected>Input Size:</option>
-            <option value="160">160 x 160</option>
-            <option value="224">224 x 224</option>
-            <option value="320">320 x 320</option>
-            <option value="416">416 x 416</option>
-            <option value="512">512 x 512</option>
-            <option value="608">608 x 608</option>
-          </select>
-          <label>Input Size</label>
-        </div>
-        <div class="row">
-          <label for="scoreThreshold">Score Threshold:</label>
-          <input disabled value="0.5" id="scoreThreshold" type="text" class="bold">
-        </div>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onDecreaseScoreThreshold()"
-        >
-          <i class="material-icons left">-</i>
-        </button>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onIncreaseScoreThreshold()"
-        >
-          <i class="material-icons left">+</i>
-        </button>
-      </div>
-    </span>
+          <div class="row side-by-side">
+            <div class="row input-field" style="margin-right: 20px;">
+              <select id="inputSize">
+                <option value="" disabled selected>Input Size:</option>
+                <option value="160">160 x 160</option>
+                <option value="224">224 x 224</option>
+                <option value="320">320 x 320</option>
+                <option value="416">416 x 416</option>
+                <option value="512">512 x 512</option>
+                <option value="608">608 x 608</option>
+              </select>
+              <label>Input Size</label>
+            </div>
+            <div class="row">
+              <label for="scoreThreshold">Score Threshold:</label>
+              <input disabled value="0.5" id="scoreThreshold" type="text" class="bold">
+            </div>
+            <button
+                    class="waves-effect waves-light btn"
+                    onclick="onDecreaseScoreThreshold()"
+            >
+              <i class="material-icons left">-</i>
+            </button>
+            <button
+                    class="waves-effect waves-light btn"
+                    onclick="onIncreaseScoreThreshold()"
+            >
+              <i class="material-icons left">+</i>
+            </button>
+          </div>
+        </span>
         <!-- tiny_face_detector_controls -->
 
         <!-- mtcnn_controls -->
         <span id="mtcnn_controls" style="text-align: left;display: none">
-      <div class="row side-by-side">
-        <div class="row">
-          <label for="minFaceSize">Minimum Face Size:</label>
-          <input disabled value="20" id="minFaceSize" type="text" class="bold">
-        </div>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onDecreaseMinFaceSize()"
-        >
-          <i class="material-icons left">-</i>
-        </button>
-        <button
-                class="waves-effect waves-light btn"
-                onclick="onIncreaseMinFaceSize()"
-        >
-          <i class="material-icons left">+</i>
-        </button>
-      </div>
-
-    </span>
+          <div class="row side-by-side">
+            <div class="row">
+              <label for="minFaceSize">Minimum Face Size:</label>
+              <input disabled value="20" id="minFaceSize" type="text" class="bold">
+            </div>
+            <button
+                    class="waves-effect waves-light btn"
+                    onclick="onDecreaseMinFaceSize()"
+            >
+              <i class="material-icons left">-</i>
+            </button>
+            <button
+                    class="waves-effect waves-light btn"
+                    onclick="onIncreaseMinFaceSize()"
+            >
+              <i class="material-icons left">+</i>
+            </button>
+          </div>
+        </span>
         <!-- mtcnn_controls -->
+
         <div style="text-align: left;display: none">
             <a class="waves-effect waves-light btn" href="video.html">
                 <i class="material-icons">video test</i>
             </a>
         </div>
+
         <div style="margin-top: 2em">
             <label for="csiec">csiec:</label>
             <input id="csiec" disabled type="text"/>
@@ -166,19 +166,18 @@
 
         <audio id="audio" autoplay="autoplay"></audio>
     </div>
-</div>
-
+    </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="text/javascript" src="js/faceRecognition.js"></script>
     <script type="text/javascript">
-        let message_Path = './live2d/';
-        let home_Path = 'https://haremu.com/';
+    let message_Path = './live2d/';
+    let home_Path = 'https://heyunfan.xyz/';
     </script>
     <script type="text/javascript" src="./live2d/js/live2d.js"></script>
-<script type="text/javascript" src="./live2d/js/message.js"></script>
+    <script type="text/javascript" src="./live2d/js/message.js"></script>
     <script type="text/javascript">
-        loadlive2d("live2d", "./live2d/model/live2d-widget-model-haruto/assets/haruto.model.json");
-        $("#landlord").draggable();
+    loadlive2d("live2d", "./live2d/model/live2d-widget-model-haruto/assets/haruto.model.json");
+    $("#landlord").draggable();
     </script>
+    <script type="text/javascript" src="js/faceRecognition.js"></script>
 </body>
 </html>

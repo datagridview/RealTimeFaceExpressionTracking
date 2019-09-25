@@ -4,191 +4,168 @@
     <script src="js/face-api.js"></script>
     <script src="js/commons.js"></script>
     <script src="js/faceDetectionControls.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.css">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-<!--<div id="navbar"></div>-->
-<div style="text-align: center;">
-<div class="center-content page-container">
+    <div style="text-align: center;">
+    <div class="center-content page-container">
 
-    <p> Reference Image: </p>
+        <p> Reference Image: </p>
 
-    <div class="progress" id="loader">
-        <div class="indeterminate"></div>
-    </div>
-    <div style="position: relative" class="margin">
-        <img id="refImg" src="" style="max-width: 500px;"/>
-        <canvas id="refImgOverlay" class="overlay"/>
-    </div>
-
-    <div class="row">
-        <div style="margin-top: 2em">
-            <label for="userwords" id="user">Inference People</label>
-            <input id="userwords" type="text"/>
+        <div class="progress" id="loader">
+            <div class="indeterminate"></div>
         </div>
-        <!-- image_selection_control -->
-        <div class="margin">
-            <label>Upload Image:</label>
-            <div>
-                <input id="refImgUploadInput" type="file" class="bold" onchange="uploadRefImage()"
-                       accept=".jpg, .jpeg, .png">
+        <div style="position: relative" class="margin">
+            <img id="refImg" src="" style="max-width: 500px;"/>
+            <canvas id="refImgOverlay" class="overlay"/>
+        </div>
+
+        <div class="row">
+            <div style="margin-top: 2em">
+                <label for="userwords" id="user">Inference People</label>
+                <input id="userwords" type="text"/>
             </div>
-        </div>
-        <!--<div class="margin">-->
-            <!--<label for="refImgUrlInput">Get image from URL:</label>-->
-            <!--<input id="refImgUrlInput" type="text" class="bold">-->
-        <!--</div>-->
-        <button
-                id="btnAxios"
-                class="btn-floating btn-large pulse">
-                <!--onclick="loadRefImageFromUrl()"-->
-
-            <i class="material-icons">cloud</i>
-        </button>
-        <button type="button" id="redirect" class="btn-floating btn-large pulse" data-dismiss="modal" style="display: none">
-            <i class="material-icons">launch</i>
-        </button>
-
-        <!--<div class="modal fade"  id="Modal">-->
-            <!--<div class="modal-dialog modal-dialog-centered" role="document">-->
-                <!--<div class="modal-content ">-->
-                    <!--<div class="modal-header">-->
-                        <!--<h5 class="modal-title" id="ModalTitle">Notification</h5>-->
-                        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
-                            <!--<span aria-hidden="true">&times;</span>-->
-                        <!--</button>-->
-                    <!--</div>-->
-                    <!--<div class="modal-body" style="text-align: center">-->
-                        <!--Reference Photo Uploaded.-->
-                    <!--</div>-->
-                    <!--<div class="modal-footer">-->
-
-                        <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
-                    <!--</div>-->
-                <!--</div>-->
+            <!-- image_selection_control -->
+            <div class="margin">
+                <label>Upload Image:</label>
+                <div>
+                    <input id="refImgUploadInput" type="file" class="bold" onchange="uploadRefImage()"
+                           accept=".jpg, .jpeg, .png">
+                </div>
+            </div>
+            <!--<div class="margin">-->
+                <!--<label for="refImgUrlInput">Get image from URL:</label>-->
+                <!--<input id="refImgUrlInput" type="text" class="bold">-->
             <!--</div>-->
-        <!--</div>-->
+            <button
+                    id="btnAxios"
+                    class="btn-floating btn-large pulse">
+                    <!--onclick="loadRefImageFromUrl()"-->
+
+                <i class="material-icons">cloud</i>
+            </button>
+            <button type="button" id="redirect" class="btn-floating btn-large pulse" data-dismiss="modal" style="display: none">
+                <i class="material-icons">launch</i>
+            </button>
+        </div>
     </div>
-</div>
-</div>
+    </div>
 </body>
-<script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
-<script>
-    let faceMatcher = null;
+    <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        let faceMatcher = null;
 
-    $('#redirect').click(function (){
-        window.location.href= "index.html";
-    });
+        $('#redirect').click(function (){
+            window.location.href= "index.html";
+        });
 
-    async function uploadRefImage(e) {
-        const imgFile = $('#refImgUploadInput').get(0).files[0];
-        const img = await faceapi.bufferToImage(imgFile);
-        $('#refImg').get(0).src = img.src;
-        updateReferenceImageResults();
-    }
-
-    async function loadRefImageFromUrl(url) {
-        const img = await requestExternalImage($('#refImgUrlInput').val());
-        $('#refImg').get(0).src = img.src;
-        updateReferenceImageResults();
-
-    }
-
-    async function updateReferenceImageResults() {
-        const inputImgEl = $('#refImg').get(0);
-        const canvas = $('#refImgOverlay').get(0);
-        const fullFaceDescriptions = await faceapi
-            .detectAllFaces(inputImgEl, getFaceDetectorOptions())
-            .withFaceLandmarks()
-            .withFaceDescriptors();
-        if (!fullFaceDescriptions.length) {
-            return
+        async function uploadRefImage(e) {
+            const imgFile = $('#refImgUploadInput').get(0).files[0];
+            const img = await faceapi.bufferToImage(imgFile);
+            $('#refImg').get(0).src = img.src;
+            updateReferenceImageResults();
         }
-        // create FaceMatcher with automatically assigned labels
-        // from the detection results for the reference image
-        faceMatcher = new faceapi.FaceMatcher(fullFaceDescriptions);
-        faceapi.matchDimensions(canvas, inputImgEl);
-        // resize detection and landmarks in case displayed image is smaller than
-        // original size
-        const resizedResults = faceapi.resizeResults(fullFaceDescriptions, inputImgEl);
 
-        $('#btnAxios').on('click', function (e) {
-            e.preventDefault();
-            let descriptor = resizedResults[0].descriptor;
-            let name = $('#userwords').val();
-            console.log(name);
-            console.log(descriptor);
+        async function loadRefImageFromUrl(url) {
+            const img = await requestExternalImage($('#refImgUrlInput').val());
+            $('#refImg').get(0).src = img.src;
+            updateReferenceImageResults();
 
-            descriptor = descriptor.toString();
-            axios.post('http://162.105.142.90:8080/api/descriptors/', {
-                name: name,
-                descriptor: descriptor
-            }, {
-                auth: {
-                    username: "admin",
-                    password: "heyf19961130"
-                }
-            })
-                .then(function (response) {
-                    console.log(response);
-                    $('#redirect').css('display','inline');
+        }
+
+        async function updateReferenceImageResults() {
+            const inputImgEl = $('#refImg').get(0);
+            const canvas = $('#refImgOverlay').get(0);
+            const fullFaceDescriptions = await faceapi
+                .detectAllFaces(inputImgEl, getFaceDetectorOptions())
+                .withFaceLandmarks()
+                .withFaceDescriptors();
+            if (!fullFaceDescriptions.length) {
+                return
+            }
+            // create FaceMatcher with automatically assigned labels
+            // from the detection results for the reference image
+            faceMatcher = new faceapi.FaceMatcher(fullFaceDescriptions);
+            faceapi.matchDimensions(canvas, inputImgEl);
+            // resize detection and landmarks in case displayed image is smaller than
+            // original size
+            const resizedResults = faceapi.resizeResults(fullFaceDescriptions, inputImgEl);
+            $('#btnAxios').on('click', function (e) {
+                e.preventDefault();
+                let descriptor = resizedResults[0].descriptor;
+                let name = $('#userwords').val();
+                console.log(name);
+                console.log(descriptor);
+
+                descriptor = descriptor.toString();
+                axios.post('http://162.105.142.90:8080/api/descriptors/', {
+                    name: name,
+                    descriptor: descriptor
+                }, {
+                    auth: {
+                        username: "admin",
+                        password: "heyf19961130"
+                    }
                 })
-                .catch(function (error) {
-                    console.log(error)
-                });
+                    .then(function (response) {
+                        console.log(response);
+                        $('#redirect').css('display','inline');
+                    })
+                    .catch(function (error) {
+                        console.log(error)
+                    });
 
+                resizedResults.forEach(({detection, descriptor}) => {
+                    const label = faceMatcher.findBestMatch(descriptor).toString();
+                    const options = {label};
+                    const drawBox = new faceapi.draw.DrawBox(detection.box, options);
+                    drawBox.draw(canvas);
+                });
+            });
+        }
+
+        async function updateQueryImageResults() {
+            if (!faceMatcher) {
+                return
+            }
+            const inputImgEl = $('#queryImg').get(0);
+            const canvas = $('#queryImgOverlay').get(0);
+            const results = await faceapi
+                .detectAllFaces(inputImgEl, getFaceDetectorOptions())
+                .withFaceLandmarks()
+                .withFaceDescriptors();
+            faceapi.matchDimensions(canvas, inputImgEl);
+            // resize detection and landmarks in case displayed image is smaller than
+            // original size
+            const resizedResults = faceapi.resizeResults(results, inputImgEl);
             resizedResults.forEach(({detection, descriptor}) => {
                 const label = faceMatcher.findBestMatch(descriptor).toString();
                 const options = {label};
                 const drawBox = new faceapi.draw.DrawBox(detection.box, options);
                 drawBox.draw(canvas);
-            });
-
-        });
-    }
-
-    async function updateQueryImageResults() {
-        if (!faceMatcher) {
-            return
+            })
         }
-        const inputImgEl = $('#queryImg').get(0);
-        const canvas = $('#queryImgOverlay').get(0);
-        const results = await faceapi
-            .detectAllFaces(inputImgEl, getFaceDetectorOptions())
-            .withFaceLandmarks()
-            .withFaceDescriptors();
-        faceapi.matchDimensions(canvas, inputImgEl);
-        // resize detection and landmarks in case displayed image is smaller than
-        // original size
-        const resizedResults = faceapi.resizeResults(results, inputImgEl);
-        resizedResults.forEach(({detection, descriptor}) => {
-            const label = faceMatcher.findBestMatch(descriptor).toString();
-            const options = {label};
-            const drawBox = new faceapi.draw.DrawBox(detection.box, options);
-            drawBox.draw(canvas);
+
+        async function updateResults() {
+            await updateReferenceImageResults();
+            await updateQueryImageResults();
+        }
+
+        async function run() {
+            // load face detection, face landmark model and face recognition models
+            await changeFaceDetector(selectedFaceDetector);
+            await faceapi.loadFaceLandmarkModel('models');
+            await faceapi.loadFaceRecognitionModel('models');
+        }
+
+        $(document).ready(function () {
+            $('#userwords').val(sessionStorage.getItem('username'));
+            initFaceDetectionControls();
+            run();
         })
-    }
-
-    async function updateResults() {
-        await updateReferenceImageResults();
-        await updateQueryImageResults();
-    }
-
-    async function run() {
-        // load face detection, face landmark model and face recognition models
-        await changeFaceDetector(selectedFaceDetector);
-        await faceapi.loadFaceLandmarkModel('models');
-        await faceapi.loadFaceRecognitionModel('models');
-    }
-
-    $(document).ready(function () {
-        $('#userwords').val(sessionStorage.getItem('username'));
-        initFaceDetectionControls();
-        run();
-    })
-</script>
+    </script>
 </html>
