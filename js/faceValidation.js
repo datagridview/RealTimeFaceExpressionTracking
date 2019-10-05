@@ -5,8 +5,14 @@ let withBoxes = true;
 let faceMatcher = null;
 
 // return the feature of the username
-function getFeatures(username) {
-    let result = axios.get("http://162.105.142.90:8080/api/persons/?name="+username)
+function getFeatures(username, password) {
+    console.log(username, password);
+    let result = axios.get("http://162.105.142.90:8080/api/persons/?name="+username,{
+        auth:{
+            username: username,
+            password: password
+        }
+    })
         .then(function (response) {
             console.log(response.data.results);
             if(response.data.results.length === 1)
@@ -84,7 +90,7 @@ $('#btn-login').click(async function (event) {
                 $('#spinner').css('display', 'none');
                 $('#done').css('display', 'inline');
                 $('#Modal2').modal('show');
-                getPerson(username);
+                getPerson(username,password);
             } else {
                 showValidate(input[2])
             }
@@ -170,12 +176,13 @@ async function onPlay(videoEl) {
     setTimeout(() => onPlay(videoEl));
 }
 
-async function getPerson(username) {
-    let f = await getFeatures(username);
+async function getPerson(username, password) {
+    let f = await getFeatures(username, password);
     console.log(f);
     if(f === '0'){
         $('#validate').css('display','none');
     }
+    return f
 }
 
 // the async function the initalize the Model
@@ -191,7 +198,8 @@ async function run() {
     const stream = await navigator.mediaDevices.getUserMedia({video: {width: 400, height: 225 }});
     const videoEl = $('#inputVideo').get(0);
     videoEl.srcObject = stream;
-    let username = sessionStorage.getItem('username');
-    let f = await getFeatures(username);
+    let username = $("#username").val();
+    let password = $("#password").val();
+    let f = await getPerson(username, password);
     sessionStorage.setItem('features',f);
 }

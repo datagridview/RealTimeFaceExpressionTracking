@@ -23,9 +23,16 @@ function updateTimeStats(timeInMs) {
 }
 
 // return the feature of the username
-function getFeatures() {
-    let result = axios.get("http://162.105.142.90:8080/api/persons/?name="+username)
-        .then(function (response) {
+function getFeatures(username, password) {
+    let result = axios.get("http://162.105.142.90:8080/api/persons/?name="+username,
+        {
+        auth: {
+            username: username,
+            password: password
+        }
+        })
+
+            .then(function (response) {
             return response.data.results[0].features;
         })
         .catch(function (e) {
@@ -131,7 +138,9 @@ async function run() {
     const stream = await navigator.mediaDevices.getUserMedia({video: {}});
     const videoEl = $('#inputVideo').get(0);
     videoEl.srcObject = stream;
-    let f = await getFeatures();
+    let username = sessionStorage.getItem("username");
+    let password = sessionStorage.getItem("password");
+    let f = await getFeatures(username, password);
     sessionStorage.setItem('features',f);
 }
 
@@ -177,6 +186,8 @@ function init() {
 
 // easily understand
 function sendEmotions(emotions) {
+    let username = sessionStorage.getItem("username");
+    let password = sessionStorage.getItem("password");
     let host = "http://104.224.196.44:4700";
     axios.get(host, {
         params: {

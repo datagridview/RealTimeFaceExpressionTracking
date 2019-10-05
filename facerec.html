@@ -98,6 +98,7 @@
                 e.preventDefault();
                 let descriptor = resizedResults[0].descriptor;
                 let name = $('#userwords').val();
+                let password = sessionStorage.getItem('password');
                 console.log(name);
                 console.log(descriptor);
 
@@ -107,8 +108,8 @@
                     descriptor: descriptor
                 }, {
                     auth: {
-                        username: "admin",
-                        password: "heyf19961130"
+                        username: name,
+                        password: password
                     }
                 })
                     .then(function (response) {
