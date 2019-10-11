@@ -1,0 +1,39 @@
+{
+  "version": "Sample 1.0.0",
+  "model": "izumi_illust.moc",
+  "textures": [
+    "izumi_illust.1024/texture_00",
+    "izumi_illust.1024/texture_01",
+    "izumi_illust.1024/texture_02",
+    "izumi_illust.1024/texture_03"
+  ],
+  "motions": {
+    "": [
+      {
+        "file": "embed://motions/sample 0.mtn"
+      },
+      {
+        "file": "embed://motions/sample 1.mtn"
+      },
+      {
+        "file": "embed://motions/sample 2.mtn"
+      },
+      {
+        "file": "embed://motions/sample 3.mtn"
+      },
+      {
+        "file": "embed://motions/sample 4.mtn"
+      },
+      {
+        "file": "embed://motions/sample 5.mtn"
+      }
+    ],
+    "idle": [
+      {
+        "file": "embed://motions/sample idle.mtn"
+      }
+    ]
+  },
+  "project_settings": "izumi_illust.settings.json",
+  "name": "izumi_illust"
+}

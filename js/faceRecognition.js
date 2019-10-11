@@ -165,6 +165,8 @@ $('#btnSend').on('click', function sendMessage() {
                 let audioUrl = "http://audio.dict.cc/speak.audio.php?type=mp3&lang=en&text=" + response.data;
                 $('#audio').attr('src', audioUrl);
                 let audio = $('#audio');
+                let model = new LAppModel();
+                model.startAppointMotion('start', 3, 1)
             } else {
                 $('#csiec').attr('value', 'error');
             }
