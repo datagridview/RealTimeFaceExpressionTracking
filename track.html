@@ -248,20 +248,14 @@
             //初始化的模型大小
             SCALE: 1.0,
             //新增属性，是否播放音频 默认为true
-            IS_PLAY_AUDIO: false,
+            IS_PLAY_AUDIO: true,
             //新增属性，audio标签id值
-            AUDIO_ID: "my_audio"
+            AUDIO_ID: "audio"
         };
-        InitLive2D();
+        mgr = InitLive2D();
     </script>
     <script type="text/javascript" src="live2d/js/message.js"></script>
     <script type="text/javascript">
-        // loadlive2d("live2d", "./live2d/model/runtime/izumi_illust.model.json");
-        // function doc(){
-        //     var model = new LAppModel();
-        //     model.startMotion("start", 3, 0);
-        //     // model.startAppointMotion("start", 3, 0);
-        // }
     $("#landlord").draggable();
     </script>
     <script type="text/javascript" src="js/faceRecognition.js"></script>

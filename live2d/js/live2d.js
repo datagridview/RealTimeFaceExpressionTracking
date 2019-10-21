@@ -8609,11 +8609,15 @@ LAppModel.prototype.update = function () {
     this.live2DModel.addToParamFloat("PARAM_ANGLE_Z", Number((10 * Math.sin(t / 5.5345))), 0.5);
     this.live2DModel.addToParamFloat("PARAM_BODY_ANGLE_X", Number((4 * Math.sin(t / 15.5345))), 0.5);
     this.live2DModel.setParamFloat("PARAM_BREATH", Number((0.5 + 0.5 * Math.sin(t / 3.2345))), 1);
+
     if (this.physics != null) {
         this.physics.updateParam(this.live2DModel)
     }
-    if (this.lipSync == null) {
-        this.live2DModel.setParamFloat("PARAM_MOUTH_OPEN_Y", this.lipSyncValue)
+    console.log(this.lipSync);
+
+    if (this.lipSync == true) {
+        console.log("hhhhhhhhhhhhhh");
+        this.live2DModel.setParamFloat("PARAM_MOUTH_OPEN_Y", Number((0.5 + 0.5 * Math.sin(3*t))),1);
     }
     if (this.pose != null) {
         this.pose.updateParam(this.live2DModel)
@@ -8822,7 +8826,8 @@ function InitLive2D() {
     initL2dCanvas(LAppDefine.CANVAS_ID);
     init();
     // this.viewMatrix.adjustScale(0, 0, 1.0)
-    this.viewMatrix.adjustScale(0, 0, LAppDefine.SCALE)
+    this.viewMatrix.adjustScale(0, 0, LAppDefine.SCALE);
+    return this.live2DMgr;
 }
 
 function initL2dCanvas(canvasId) {

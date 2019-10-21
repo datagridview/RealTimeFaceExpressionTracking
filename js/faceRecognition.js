@@ -1,3 +1,4 @@
+let model = mgr.models[0];
 let forwardTimes = [];
 let withFaceLandmarks = false;
 let withBoxes = true;
@@ -5,6 +6,13 @@ let faceMatcher = null;
 let username = sessionStorage.getItem("username");
 let password = sessionStorage.getItem("password");
 let absentCount = 0;
+$('#audio').on('ended',function () {
+    model.setLipSync(false);
+});
+
+$('#audio').on('play',function () {
+    model.setLipSync(true);
+});
 
 function onChangeWithFaceLandmarks(e) {
     withFaceLandmarks = $(e.target).prop('checked')
@@ -60,7 +68,6 @@ async function onPlay(videoEl) {
 
     // serialize the recognition results
     const resizedResults = faceapi.resizeResults(results, dims);
-
     // get the features of the reference user stored in the SessionStorage
     // pasre the data into Float32Array
     // unite the username and the features referred before
@@ -84,7 +91,15 @@ async function onPlay(videoEl) {
         faceMatcher = new faceapi.FaceMatcher(labeledDescriptors);
         resizedResults.forEach(({detection, descriptor, expressions}) => {
             const expression = Object.keys(expressions).sort(function(a,b){return expressions[b]-expressions[a]})[0];
-
+            switch (expression){
+                case "surprised":{model.startAppointMotion('start',3,0);break}
+                case "disgusted":{model.startAppointMotion('start',3,1);break}
+                case "fearful":{model.startAppointMotion('start',3,2);break}
+                case "happy":{model.startAppointMotion('start',3,3);break}
+                case "sad":{model.startAppointMotion('start',3,4);break}
+                case "angry":{model.startAppointMotion('start',3,7);break}
+                default:break;
+            }
             // TODO: not fully realized
             // send the expression to the server
             // console.log(expression);
@@ -125,6 +140,7 @@ async function onPlay(videoEl) {
 }
 
 
+
 // the async function the initalize the Model
 async function run() {
     await changeFaceDetector(SSD_MOBILENETV1);
@@ -144,6 +160,7 @@ async function run() {
     sessionStorage.setItem('features',f);
 }
 
+
 // the moment you click the send button
 // you will send message to the csiec bot server
 // and get the returned messages from server
@@ -162,18 +179,40 @@ $('#btnSend').on('click', function sendMessage() {
                 $('#csiec').attr('value', response.data);
                 text = response.data;
                 showMessage(text, 15000);
+
                 let audioUrl = "http://audio.dict.cc/speak.audio.php?type=mp3&lang=en&text=" + response.data;
-                $('#audio').attr('src', audioUrl);
-                let audio = $('#audio');
-                let model = new LAppModel();
-                model.startAppointMotion('start', 3, 1)
+                $('#audio').attr('src',audioUrl);
+
+                // axios.get(audioUrl)
+                //     .then(function(response){
+                //     const blob = new Blob([response.data], {type: 'audio/mp3'});
+                //     const blobUrl = URL.createObjectURL(blob);
+                //     console.log(blobUrl);
+                //     const audio = new Audio(blobUrl);
+                //     $('#audio').attr('src', audio);
+                // });
+
+
+                // let actx = new (window.AudioContext || webkitAudioContext)();
+                // let source = actx.createMediaElementSource(audio);
+                // let analyzer = actx.createAnalyser();
+                // analyzer.fftSize = 2048;
+                // let bufferLength = analyzer.fftSize;
+                // console.log(bufferLength);
+                // let dataArray = new Uint8Array(bufferLength);
+                // source.connect(analyzer);
+                // analyzer.connect(actx.destination);
+                // analyzer.getByteFrequencyData(dataArray);
+                // console.log(dataArray);
+                // model.setLipSync(false);
+
             } else {
                 $('#csiec').attr('value', 'error');
             }
-        })
-        .catch(function (error) {
-            console.log(error.data);
         });
+        // .catch(function (error) {
+        //     console.log(error);
+        // });
 });
 
 function init() {

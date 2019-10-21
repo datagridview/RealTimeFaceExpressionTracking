@@ -37,9 +37,13 @@
       },
       {
         "file": "mtn/09.mtn"
+      },
+      {
+        "file": "mtn/idle_02.mtn"
       }
     ]
   },
+
   "physics": "haruto.physics.json",
   "name": "haruto"
 }
