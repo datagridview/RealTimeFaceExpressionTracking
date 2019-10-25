@@ -8616,7 +8616,6 @@ LAppModel.prototype.update = function () {
     console.log(this.lipSync);
 
     if (this.lipSync == true) {
-        console.log("hhhhhhhhhhhhhh");
         this.live2DModel.setParamFloat("PARAM_MOUTH_OPEN_Y", Number((0.5 + 0.5 * Math.sin(3*t))),1);
     }
     if (this.pose != null) {
